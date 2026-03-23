@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 function Home({ expenses, budgets, deleteExpense, deleteBudget }) {
   
   const [period, setPeriod] = useState(null);
-  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
+  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8001";
 
   useEffect(() => {
     const token = localStorage.getItem("access_token")

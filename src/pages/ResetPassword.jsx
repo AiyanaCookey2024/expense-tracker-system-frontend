@@ -10,7 +10,7 @@ function ResetPassword() {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
 
-  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
+  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8001";
 
   async function handleSubmit(e) {
     e.preventDefault();
