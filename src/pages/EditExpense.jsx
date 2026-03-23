@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function EditExpense() {
+function EditExpense({editExpense}) {
 
-    const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8001";
+    const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -32,46 +32,12 @@ function EditExpense() {
             }
             return res.json();
             })
-            .then(data => setExpense(data))
+            .then(data => setExpense({...data, 
+                salary_period: data.salary_period?.id || data.salary_period,
+                })
+            )   
             .catch(err => console.error(err));
     }, [id, apiURL]);
-    
-    const handleChange = (e) => {
-        setExpense({
-            ...expense,
-            [e.target.name]: e.target.value
-        });
-    }
-
-    const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const token = localStorage.getItem("access_token");
-    if (!token) return;
-
-    const formattedExpense = {
-        ...expense,
-        amount: parseFloat(expense.amount),
-        salary_period: parseInt(expense.salary_period),
-    };
-
-    fetch(`${apiURL}/api/expenses/${id}/`, {
-        method: "PUT",
-        headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formattedExpense),
-    })
-        .then(res => {
-        if (!res.ok) {
-            throw new Error("Failed to update expense");
-        }
-        return res.json();
-        })
-        .then(() => navigate(`/expenses/${id}`))
-        .catch(err => console.error(err));
-    };
 
     useEffect(() => {
         const token = localStorage.getItem("access_token");
@@ -91,6 +57,32 @@ function EditExpense() {
             .then(data => setSalaryPeriods(data))
             .catch(err => console.error(err));
     }, [apiURL]);
+    
+    const handleChange = (e) => {
+        setExpense({
+            ...expense,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    async function handleSubmit(e){
+    e.preventDefault();
+
+     try {
+        const formattedExpense = {
+            ...expense,
+            amount: parseFloat(expense.amount),
+            salary_period: parseInt(expense.salary_period),
+        };
+
+        await editExpense(Number(id), formattedExpense);
+        navigate("/");
+        } catch (error) {
+        console.error(error);
+        alert("Failed to update expense");
+    }   
+}
+
 
     return (
         <div className="container">

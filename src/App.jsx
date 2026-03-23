@@ -29,7 +29,7 @@ function App() {
   const { logout, isLoggedIn, username } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8001";
+  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
 
   function handleLogout() {
     logout();
@@ -158,6 +158,57 @@ function App() {
       .catch((err) => console.error(err));
   }
 
+  async function editBudget(id, data) {
+    const token = localStorage.getItem("access_token");
+
+    const res = await fetch(`${apiURL}/api/budgets/${id}/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update budget");
+    }
+
+    const editBudget = await res.json();
+
+    setBudgets((prev) =>
+      prev.map((budget) => (budget.id === id ? editBudget : budget))
+    );
+
+    return editBudget;
+  }
+
+  async function editExpense(id, data) {
+    const token = localStorage.getItem("access_token");
+
+    const res = await fetch(`${apiURL}/api/expenses/${id}/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const editExpense = await res.json();
+
+    if (!res.ok) {
+      console.error("Expense update error:", editExpense);
+      throw new Error("Failed to update expense");
+    }
+
+    setExpenses((prev) =>
+      prev.map((expense) => (expense.id === id ? editExpense : expense))
+    );
+
+    return editExpense;
+}
+
   const hideNav =
     location.pathname === "/login" ||
     location.pathname === "/register" ||
@@ -233,7 +284,7 @@ function App() {
           path="/expenses/edit/:id"
           element={
             <PrivateRoute>
-              <EditExpense />
+              <EditExpense editExpense={editExpense}/>
             </PrivateRoute>
           }
         />
@@ -249,7 +300,7 @@ function App() {
           path="/budgets/edit/:id"
           element={
             <PrivateRoute>
-              <EditBudget />
+              <EditBudget editBudget={editBudget}/>
             </PrivateRoute>
           }
         />

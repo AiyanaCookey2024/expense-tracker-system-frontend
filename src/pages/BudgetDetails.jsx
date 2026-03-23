@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 function BudgetDetails() {
 
-    const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8001";
+    const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
 
     const { id } = useParams();
     const [budgets, setBudgets] = useState(null);

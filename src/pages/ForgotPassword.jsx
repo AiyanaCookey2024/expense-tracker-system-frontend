@@ -2,7 +2,7 @@ import { useState } from "react";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8001";
+  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
 
   async function handleSubmit(e) {
     e.preventDefault();

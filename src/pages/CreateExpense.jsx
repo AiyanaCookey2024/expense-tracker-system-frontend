@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function CreateExpense({ addExpense }) {
-  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8001";
+  const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
   const navigate = useNavigate();
 
   const [salaryPeriods, setSalaryPeriods] = useState([]);

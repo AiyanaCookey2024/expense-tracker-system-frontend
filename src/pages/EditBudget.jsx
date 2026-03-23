@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function EditBudget() {
+function EditBudget({ editBudget }) {
 
-    const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8001";
+    const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
 
     const { id } = useParams();
     const navigate = useNavigate();
@@ -40,28 +40,16 @@ function EditBudget() {
         });
     }
 
-    const handleSubmit = (e) => {
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        const token = localStorage.getItem("access_token");
-        if (!token) return;
-
-        fetch(`${apiURL}/api/budgets/${id}/`, {
-            method: "PUT",
-            headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(budget),
-        })
-            .then(res => {
-            if (!res.ok) {
-                throw new Error("Failed to update budget");
+        try {
+            await editBudget(Number(id), budget);
+            navigate("/");
+            } catch (error) {
+            console.error(error);
+            alert("Failed to update budget");
             }
-            return res.json();
-            })
-            .then(() => navigate(`/budgets/${id}`))
-            .catch(err => console.error(err));
         };
 
     return (
