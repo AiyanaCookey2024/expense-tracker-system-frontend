@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 function SalaryPeriod() {
     const [period, setPeriod] = useState(null);
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
     const navigate = useNavigate();
 
@@ -73,6 +74,8 @@ function SalaryPeriod() {
 
 
   if (!period) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+  if (!period) return <p>No salary period found.</p>
 
   return (
     <div className="container">
