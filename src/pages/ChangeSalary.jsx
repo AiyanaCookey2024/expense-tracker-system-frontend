@@ -2,14 +2,24 @@ import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
 function SalaryPeriod() {
-    const [period, setPeriod] = useState(null);
+    const [period, setPeriod] = useState({
+      month: "",
+      year: "",
+      total_salary:"",
+    })
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
     const navigate = useNavigate();
 
    useEffect(() => {
       const token = localStorage.getItem("access_token");
-      if (!token) return;
-
+      if (!token) {
+        setError("No access token found");
+        setLoading(false);
+        return;
+      }
+      
       fetch(`${apiURL}/api/salary-periods/`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -21,10 +31,20 @@ function SalaryPeriod() {
           }
           return res.json();
         })
-        .then(data => {
-          setPeriod(data[0]);
+        .then((data) => {
+          if (data.length > 0){
+            setPeriod(data[0]);
+          } else {
+            setError("No salary period found for this user.")
+          }
         })
-        .catch(err => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          setError("Failed to load salary period.")
+        })
+        .finally(() => {
+          setLoading(false);
+        })
     }, [apiURL]);
 
 
@@ -58,6 +78,8 @@ function SalaryPeriod() {
 
 
   if (!period) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
 
   return (
     <div className="container">
