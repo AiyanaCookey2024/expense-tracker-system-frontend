@@ -67,15 +67,15 @@ function SalaryPeriod() {
         total_salary: Number(period.total_salary),
       }),
     })
-      .then((res) => {
+      .then(async (res) => {
+        const data = await res.json();
+
         if (!res.ok) {
-          throw new Error(
-            existingPeriodId
-              ? "Failed to update salary period"
-              : "Failed to create salary period"
-          );
+          console.error("Salary period create/update error:", data);
+          throw new Error(JSON.stringify(data));
         }
-        return res.json();
+
+        return data;
       })
       .then((savedPeriod) => {
         console.log("Saved:", savedPeriod);
