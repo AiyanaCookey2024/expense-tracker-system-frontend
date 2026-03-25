@@ -58,11 +58,19 @@ function Profile() {
           image_public_id: imagePublicId,
         }),
       });
+      console.log("Sending profile update:",{
+        email, 
+        image_url: imageUrl,
+        image_public_id:imagePublicId,
+      })
 
       const data = await res.json();
+      console.log("PATCH status:", res.status);
+      console.log("PATCH response:", data);
 
       if (!res.ok) {
-        alert(data.error || "Failed to update profile");
+        console.log("PATCH error response", data);
+        alert(JSON.stringify(data));
         return;
       }
 
