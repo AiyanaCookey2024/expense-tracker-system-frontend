@@ -78,7 +78,6 @@ function SalaryPeriod() {
         return data;
       })
       .then((savedPeriod) => {
-        console.log("Saved:", savedPeriod);
         setPeriod(savedPeriod);
         setExistingPeriodId(savedPeriod.id);
       })

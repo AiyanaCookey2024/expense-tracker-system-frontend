@@ -1,8 +1,5 @@
 # Frontend (React)
 
-```markdown
-# Expense Tracker Frontend
-
 ## Overview
 This is the React-based frontend for the Expense Tracker application. It interacts with a Django REST API to provide users with a responsive interface for managing budgets, expenses, and salary periods.
 
@@ -61,6 +58,7 @@ All secure endpoints include the Authorization header:
 
 ```text
 Authorization: Bearer <token>
+
 ```
 
 ### 1. Install dependencies 

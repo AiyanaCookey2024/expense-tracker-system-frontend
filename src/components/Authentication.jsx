@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 
-const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000";
-console.log("API URL is", apiURL)
+const apiURL = import.meta.env.VITE_DJANGO_API_URL || "http://127.0.0.1:8000"
 
 export const Login = () => {
   const { login } = useAuth();
