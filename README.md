@@ -20,7 +20,7 @@ This is the React-based frontend for the Expense Tracker application. It interac
 
 ## Tech Stack
 - React (Vite)
-- JavaScript (ES6)
+- JavaScript 
 - Fetch API
 - React Router
 - LocalStorage (for JWT)
